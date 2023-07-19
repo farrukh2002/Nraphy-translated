@@ -49,11 +49,5 @@ Follow the steps below to prepare the bot for use
 4. Install the node modules by pulling them to the console `npm i`.
 > 🎉Congratulations, you have completed the installation! When you want to run the bot, type `npm start` in the console.
 
-## 🔔 Güncelleme Desteği
-Eğer bu yazıyı okuyorsanız güncelleme desteği devam etmektedir. Güncellemeyi keseceksem de tam burada bildiririm. Her güncelleme için birkaç ayda bir yoklamakta fayda var. Projeyi yıldızlayarak katkıda bulunabilirsiniz!
-
-## 💞 Yardıma İhtiyacın Olursa
-[Nraphy Discord Sunucusu](https://discord.gg/JhasTMZr2A)'na katılabilir ve destek alabilirsin. Baştan uyarayım; emeksizce, bilgisizce bot sahibi olma peşindekiler ve bu metni baştan sona okumadan yardım isteyecekler lütfen projeyi terk etsinler.
-
 ## ❤️ Credits
 [here](https://github.com/RFKaya/Nraphy#%EF%B8%8F-ayr%C4%B1ca-te%C5%9Fekk%C3%BCrler).
