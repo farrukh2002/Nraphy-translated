@@ -3,54 +3,51 @@
   <img width="150" height="150" href="https://discord.com/oauth2/authorize?client_id=700959962452459550&permissions=8&redirect_uri=https://discord.gg/VppTU9h&scope=applications.commands%20bot&response_type=code" src="https://cdn.discordapp.com/attachments/801418986809589771/1007426236894691378/Narpitti.png">
 </p>
 
-# Nraphy - Discord Bot Altyapısı (Discord js v14)
-Discord için en kapsamlı bot altyapısıdır. En güncel Discord.js sürümünü (v14) kullanmaktadır ve slash komutları desteklemektedir. Botu kurmakla falan uğraşmak istemezsen ve güncel halini kullanmak istersen [Davet bağlantısı](https://discord.com/oauth2/authorize?client_id=700959962452459550&permissions=8&redirect_uri=https://discord.gg/VppTU9h&scope=applications.commands%20bot&response_type=code) ile Nraphy'i davet edebilirsin.
+# Nraphy - Discord Bot Engine (Discord js v14)
+This is an english translation of the bot Nraphy. None of the codes have been edited by me apart from translating the bot. If you still need the original bot please go to their [github page](https://github.com/RFKaya/Nraphy>git).
+## ❤️‍🔥 Features
 
-## ❤️‍🔥 Özellikler
-Bu projede tüm Nraphy kodları açık olarak paylaşılmamıştır. Botun güncel hâli saklıdır, güncel hâli ileri zamanlarda paylaşılacaktır, takipte kalabilirsin. Bu projede, Nraphy'de bulunan sistemlerle ilgili durumlar aşağıdaki gibidir:
-### Sistemler
-> ✅ Bağlantı Engel <br>
-> ✅ Buton Rol <br>
-> ✅ Büyük Harf Engel <br>
-> ✅ Davet Sistemi <br>
-> ✅ Galeri <br>
-> ✅ Log <br>
-> ✅ Müzik Sistemi <br>
-> ✅ Oto Rol <br>
-> ✅ Sayaç <br>
-> ✅ Spam Koruması <br>
+### Systems
+> ✅ Connection barrier<br>
+> ✅ Button Role<br>
+> ✅ Capital Letter Barrier<br>
+> ✅ Invitation System<br>
+> ✅ Gallery<br>
+> ✅ Log<br>
+> ✅ Music System<br>
+> ✅ Auto Role<br>
+> ✅ Counter<br>
+> ✅ Spam Protection <br>
 
-### Oyun Sistemleri
-> ✅ Kelime Oyunu <br>
+### Game Systems
+> ✅ Word Game<br>
 
-### Komutlar
-> ✅ Müzik Komutları <br>
-> ✅ Botla İlgili Komutlar <br>
-> ✅ Yetkili Komutları <br>
-> ✅ Eğlence Komutları <br>
-> ✅ Genel Komutlar <br>
-> ✅ Oyunlar <br>
+### Commands
+>✅Music Commands<br>
+>✅Bot Related Commands<br>
+>✅Authorized Commands<br>
+>✅Entertainment Commands<br>
+>✅General Commands<br>
+>✅Games<br>
 
-### Diğer
-> ✅ Kendi slash komutlarınızı ekleyip kullanabilmen için optimize bir altyapı <br>
-> ✅ Client'a tanımlı, işlevli fonksiyonlar <br>
-> ✅ Kullanımı basitleştirilmiş ve önbellekleme sistemiyle modifiye edilmiş MongoDB veritabanı <br>
-> ✅ Burada bahsedilmeyen birçok özellik daha... <br>
+### Other Features
+>✅An optimized infrastructure for adding and using your own slash commands<br>
+>✅Functional functions defined to the client<br>
+>✅A simplified and modified MongoDB database with a caching system<br>
+>✅Many more features not mentioned here...<br>
 
-## ✨ Başlarken (Getting Started)
-Botu kullanıma hazırlamak için aşağıdaki adımları izle
-1. `config.json` dosyasının içindeki gerekli yerleri doldur. <br>
-    * **token:** [Discord Developer Portal](https://discord.com/developers/applications) üzerinden oluşturduğun botunun tokeni. <br>
-    * **topggToken:** Top.gg oy kontrolü vb. için kullanılır. Doldurulması zorunlu değildir. <br>
-    * **mongooseToken:** [MongoDB Cloud](https://cloud.mongodb.com) üzerinden edinebilirsin.
-		> Nasıl edineceği bilmiyorsan [MongoDB Atlas connection bağlantısı alma](https://medium.com/@thearkxd/node-js-projeleri-i%C3%A7in-mongodb-atlas-connection-linki-alma-5d955bbe5ae6) rehberine göz atabilirsin. 
-	*(Medium'daki **@thearkxd** kullanıcısına aittir. Kendisiyle bağlantım yoktur.)*
-    * **clientLogsWebhookURL:** Client Logları için Webhook bağlantısı. Doldurulması tavsiye edilir. <br>
-2. `client.js` dosyasındaki `client.settings` objesinin verilerini botuna göre özelleştir.
-3. Eğer yoksa botun dizinine `logs` adında bir klasör oluştur.
-4. Konsola `npm i` çekerek node modüllerini kur. <br>
+## ✨ Getting Started
+Follow the steps below to prepare the bot for use
 
-> 🎉 Tebrikler, kurulumu tamamladın! Botu çalıştırmak istediğinde konsola `npm start` yazabilirsin.
+1. `config.json` Fill in the required places in the file.<br>
+   * **token:** The token of the bot you created on the Discord Developer Portal .<br>
+   * **topggToken:** Top.gg vote check etc. using for. It is not required to be filled.<br>
+   * **mongooseToken:** You can get it on MongoDB Cloud .
+   * **clientLogsWebhookURL:** Webhook link for Client Logs. It is recommended to be filled.
+2. `client.js` Customize the data of your object in the file client.settingsaccording to your bot.
+3. `logs` If it doesn't exist, create a folder called the bot's directory .
+4. Install the node modules by pulling them to the console `npm i`.
+> 🎉Congratulations, you have completed the installation! When you want to run the bot, type `npm start` in the console.
 
 ## 🔔 Güncelleme Desteği
 Eğer bu yazıyı okuyorsanız güncelleme desteği devam etmektedir. Güncellemeyi keseceksem de tam burada bildiririm. Her güncelleme için birkaç ayda bir yoklamakta fayda var. Projeyi yıldızlayarak katkıda bulunabilirsiniz!
@@ -58,15 +55,5 @@ Eğer bu yazıyı okuyorsanız güncelleme desteği devam etmektedir. Güncellem
 ## 💞 Yardıma İhtiyacın Olursa
 [Nraphy Discord Sunucusu](https://discord.gg/JhasTMZr2A)'na katılabilir ve destek alabilirsin. Baştan uyarayım; emeksizce, bilgisizce bot sahibi olma peşindekiler ve bu metni baştan sona okumadan yardım isteyecekler lütfen projeyi terk etsinler.
 
-## ❤️ Ayrıca Teşekkürler
-Aşağıdaki kişilere, projelere ve aklıma gelmeyen daha nice kaynağa, emeklerinden dolayı teşekkürlerimi sunuyorum. (Aklıma geldikçe dahasını da ekleyeceğim)
-### Saygıdeğer Abilerim 
-* [Androz2091](https://github.com/Androz2091)
-* [Akif9748](https://github.com/Akif9748)
-### Projeler
-* [Alita](https://github.com/KSJaay/Alita)
-* [Atlanta](https://github.com/Androz2091/AtlantaBot)
-* [Dodong](https://github.com/nizewn/Dodong)
-* [Eyesense-Music-Bot](https://github.com/naseif/Eyesense-Music-Bot)
-### Diğer
-* [Theark (Medium)](https://medium.com/@thearkxd)
+## ❤️ Credits
+[here](https://github.com/RFKaya/Nraphy#%EF%B8%8F-ayr%C4%B1ca-te%C5%9Fekk%C3%BCrler).
