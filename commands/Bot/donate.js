@@ -2,8 +2,8 @@ const { ButtonBuilder } = require('discord.js');
 
 module.exports = {
   interaction: {
-    name: "bağış",
-    description: "Bot geliştiricisine yemek ısmarlamanız için yardımcı olur.",
+    name: "donate",
+    description: "It helps the bot developer to cater to you.",
     options: []
   },
   aliases: [],
@@ -20,8 +20,8 @@ module.exports = {
       embeds: [
         {
           color: client.settings.embedColors.default,
-          title: '**»** Canın Sağ Olsun Kardeeş! 💖',
-          description: '**•** Valla ihtiyaç yok, düşünmen yeterli 😇',
+          title: '**»** Good luck brother!  💖',
+          description: '**•** Well, there is no need, just think 😇',
         }
       ],
       components: [
