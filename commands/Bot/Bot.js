@@ -112,7 +112,7 @@ module.exports = {
             value:
               `**•** Uptime: \`${humanize(os.uptime() * 1000, { language: "en", round: true, largest: 2 })}\`\n` +
               //`**•** Available Memory: \`${((os.freemem() * (10 ** -6)) / 1024).toFixed(2)} GB\`\n` +
-              `**•** Memory Usage: \`${((os.totalmem() - os.freemem()) / (1024 ** 3)).toFixed(2)} GB/${(os.totalmem() / (1024 **) 3)).toFixed(2)} GB (%${(((os.totalmem() - os.freemem()) / os.totalmem()) * 100.toFixed()})\`\n`
+              `**•** Memory Usage: \`${((os.totalmem() - os.freemem()) / (1024 ** 3)).toFixed(2)} GB/${(os.totalmem() / (1024 ** 3)).toFixed(2)} GB (%${(((os.totalmem() - os.freemem()) / os.totalmem()) * 100.toFixed())})\`\n`
           },
           {
             name: '**»** Errors (Log)',
