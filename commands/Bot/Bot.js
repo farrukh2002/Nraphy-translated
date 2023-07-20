@@ -438,7 +438,7 @@ module.exports = {
                   name: '**»** System Usage Statistics (Instant)',
                   value:
                     `**•** Connection Block: \`${linkBlock_guilds} Server\`\n` +
-                    `**•** Button Role: \`${button Role messages} Message\`\n` +
+                    `**•** Button Role: \`${buttonRole_messages} Message\`\n` +
                     `**•** Caps Block: \`${upperCaseBlock_guilds} Server\`\n` +
                     `**•** Sweepstakes: \`${availableBetaGiveaways.length} (Ongoing)\`\n` +
                     `**•** Invite System: \`${inviteManager_guilds} Server\`\n` +
