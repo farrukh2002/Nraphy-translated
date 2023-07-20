@@ -84,7 +84,7 @@ module.exports.pushDatabaseQueue = async (client) => {
   client.guildsWaitingForSync.forEach(async guildId => {
     client.guildsWaitingForSync.splice(client.guildsWaitingForSync.indexOf(guildId), 1);
     await global.localDatabase.guilds[guildId].save();
-    client.logger.log(`${guildId} ID'li sunucu, database ile eşitlendi`, "log", false);
+    client.logger.log(` The server with ID ${guildId} is synchronized with the database`, "log", false);
   });
 
 };
