@@ -50,7 +50,7 @@ module.exports = {
         embeds: [
           {
             color: client.settings.embedColors.red,
-            title: '**»** Your Notice Message Shouldn't Exceed 1000 Characters!',
+            title: '**»** Your Notice Message Should not Exceed 1000 Characters!',
             description: `**•** Your message contains **${suggestion.length - 1000}** extra characters.`
           }
         ]
