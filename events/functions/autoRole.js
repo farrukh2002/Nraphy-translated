@@ -1,123 +1,91 @@
-const permissions = require("../../utils/Permissions.json");
+module.exports = async (client, message) => {
 
-module.exports = async (client, member, autoRole, guildData) => {
+  if (!message.guild) return;
+  if (!message.channel) return;
+  if (message.author.bot) return;
+  if (message.system) return;
+
+  const guildData = await client.database.fetchGuild(message.guild.id);
+  var userData;
+
+  const prefix = guildData.prefix || client.settings.prefix;
+
+  const userCache = client.userDataCache[message.author.id] || (client.userDataCache[message.author.id] = {});
 
   try {
 
-    //---------------Rol---------------//
+    //Commands
+    if (message.content.toLowerCase().startsWith(prefix.toLowerCase())) {
 
-    if (!member.guild.roles.cache.has(autoRole.role)) {
+      //Checking if the message is a command
+      const args = message.content.slice(prefix.length).trim().split(/ +/g);
+      const commandName = args.shift().toLowerCase().replaceAll('-', '').toEN();
+      const cmd = client.commands.find(command => [(command.interaction || command).name, ...(command.aliases || [])].map(string => string.replaceAll('-', '').toEN()).includes(commandName));
+      if (!cmd) return;
 
-      client.logger.log(`Oto-Rol rolü bulunamadı, sunucudaki oto-rol sıfırlanıyor... • ${member.guild.name} (${member.guild.id})`);
-      guildData.autoRole = { role: null, channel: null, setupChannel: null };
-      guildData.markModified('autoRole');
-      await guildData.save();
+      userData ||= await client.database.fetchUser(message.author.id);
 
-      return member.guild.channels.cache.get(autoRole.setupChannel)?.send({
-        embeds: [
-          {
-            color: client.settings.embedColors.red,
-            title: '**»** Oto-Rol Rolü Bulunamadığı İçin Oto-Rol Sıfırlandı!',
-            description: `**•** Tekrar ayarlamak için \`/oto-rol Ayarla\` komutunu kullanabilirsiniz.`
-          }
-        ]
-      });
-
+      await require('../events/functions/cmdExecuter.js')(client, message, cmd, guildData, userData, args);
     }
 
-    if (member.guild.roles.cache.get(autoRole.role).rawPosition >= member.guild.members.me.roles.highest.rawPosition) {
+    const linkBlock = guildData.linkBlock;
+    const gallery = guildData.gallery;
 
-      client.logger.log(`Oto-Rol rolünü verecek yetkim bulunmadığı için sunucudaki oto-rol sıfırlanıyor... • ${member.guild.name} (${member.guild.id})`);
-      guildData.autoRole = { role: null, channel: null, setupChannel: null };
-      guildData.markModified('autoRole');
-      await guildData.save();
+    //Bağlantı Engel
+    if (linkBlock && message.content)
+      //Galeri muaf
+      if (message.channel.id !== gallery) require("./functions/linkBlock")(client, message, linkBlock, false);
 
-      return member.guild.channels.cache.get(autoRole.setupChannel)?.send({
-        embeds: [
-          {
-            color: client.settings.embedColors.red,
-            title: '**»** Oto-Rol Rolünü Vermek İçin Yetkim Bulunamadığı İçin Oto-Rol Sıfırlandı!',
-            description: `**•** Tekrar ayarlamak için \`/oto-rol Ayarla\` komutunu kullanabilirsiniz.`
-          }
-        ]
-      });
+    //Galeri
+    if (gallery && message.channel.id == gallery)
+      require("./functions/gallery.js")(client, message, gallery);
 
+    //Spam Koruması
+    const spamProtection = guildData.spamProtection;
+    if (spamProtection && message.content)
+      require("./functions/spamProtection.js")(client, message, spamProtection);
+
+    //CapsLock Block
+    //client.logger.log(`CAPSLOCK-EVENT TRIGGERED!  • ${message.guild.name} (${message.guild.id})`);
+    require("./functions/upperCaseBlock.js")(client, message, guildData);
+
+    //Word game
+    var wordGame = guildData.wordGame;
+    if (wordGame?.channel === message.channel.id) {
+      client.logger.log(`WORD-GAME IS TRIED!  • ${message.guild.name} (${message.guild.id})`, "log", false);
+      require("./functions/wordGame.js")(client, message, wordGame, guildData);
     }
 
-    await member.roles.add(autoRole.role);
+    if (userCache.lastMessage && Date.now() - userCache.lastMessage < 2000)
+      return;
+    userCache.lastMessage = Date.now();
 
-    //---------------Rol---------------//
+    //Prefixim & Soru-Sor
+    if (message.content === `<@!${client.user.id}>` || message.content === `<@${client.user.id}>` || message.content === `<@&${client.user.id}>`) {
 
-    //---------------Kanal---------------//
-
-    if (!autoRole.channel) return;
-
-    if (!member.guild.channels.cache.has(autoRole.channel)) {
-
-      client.logger.log(`Oto-Rol kanalı bulunamadı, sunucudaki oto-rol kanalı sıfırlanıyor... • ${member.guild.name} (${member.guild.id})`);
-      guildData.autoRole.channel = null;
-      guildData.markModified('autoRole.channel');
-      await guildData.save();
-
-      return member.guild.channels.cache.get(autoRole.setupChannel)?.send({
-        embeds: [
-          {
-            color: client.settings.embedColors.red,
-            title: '**»** Oto-Rol Kanalı Bulunamadığı İçin Oto-Rol Kanalı Sıfırlandı!',
-            description: `**•** Tekrar ayarlamak için \`/oto-rol Ayarla Kanal\` komutunu kullanabilirsiniz.`
-          }
-        ]
-      });
-
-    }
-
-    let clientPerms = [];
-    ["ViewChannel", "SendMessages", "EmbedLinks"].forEach((perm) => {
-      if (!member.guild.channels.cache.get(autoRole.channel).permissionsFor(member.guild.members.me).has(perm)) {
-        clientPerms.push(permissions[perm]);
-      }
-    });
-
-    if (clientPerms.length > 0) {
-
-      client.logger.log(`Oto-Rol kanalında bir/birkaç yetkim bulunmadığı için Oto-Rol kanalı sıfırlanıyor... • ${member.guild.name} (${member.guild.id})`);
-      guildData.autoRole.channel = null;
-      guildData.markModified('autoRole');
-      await guildData.save();
-
-      return member.guild.channels.cache.get(autoRole.setupChannel)?.send({
+      message.channel.send({
         embeds: [{
-          color: client.settings.embedColors.red,
-          author: {
-            name: `Oto-Rol Kanalına Mesaj Gönderebilmem İçin Gereken İzinlere Sahip Değilim!`,
-            icon_url: member.guild.iconURL(),
-          },
-          description: `**»** ${member.guild.channels.cache.get(autoRole.channel)} kanalında yeterli yetkiye sahip olmadığım için oto-rol kanalını sıfırladım.`,
-          fields: [
-            {
-              name: '**»** İhtiyacım Olan İzinler;',
-              value: "**•** " + clientPerms.map((p) => `${p}`).join("\n**•** "),
-            },
-          ]
+          color: client.settings.embedColors.default,
+          description: `**»** My Prefix \`${prefix}\` • You can access all commands by typing \`${prefix}commands\`.`
         }]
-      });
+      }).catch(e => { });
 
     }
 
-    member.guild.channels.cache.get(autoRole.channel).send({
-      embeds: [{
-        color: client.settings.embedColors.default,
-        author: {
-          name: `${member.user.username}, sunucuya katıldı!`,
-          icon_url: member.user.avatarURL(),
-        },
-        description: `**»** Hoş geldin! <@&${autoRole.role}> rolünü otomatik olarak verdim.`,
-      }]
-    });
+    userData ||= await client.database.fetchUser(message.author.id, false);
 
-
-
-    //---------------Kanal---------------//
+    //AFK
+    if (userData?.AFK?.time) {
+      client.logger.log(`AFK SYSTEM TRIGGERED!  • ${message.guild.name} (${message.guild.id})`);
+      require("./functions/AFK.js").removeAFK(client, message, userData);
+    }
+    if (message.mentions.users.first()) {
+      let mentionUserData = await client.database.fetchUser(message.mentions.users.first().id, false);
+      if (mentionUserData?.AFK?.time) {
+        client.logger.log(`AFK SYSTEM TRIGGERED!  • ${message.guild.name} (${message.guild.id})`);
+        require("./functions/AFK.js").userIsAFK(client, message, mentionUserData);
+      }
+    }
 
   } catch (err) { client.logger.error(err); };
 };
