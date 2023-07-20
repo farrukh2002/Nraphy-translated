@@ -41,13 +41,13 @@ module.exports = async (client, interaction, cmd, guildData, userData, args = nu
             {
               color: client.settings.embedColors.red,
               author: {
-                name: `Bu Komutu Çalıştırabilmem İçin Gereken İzinlere Sahip Değilim!`,
+                name: `Bu I Don't Have The Permissions To Run The Command!`,
                 icon_url: interaction.guild.iconURL(),
               },
               fields: [
                 {
-                  name: '**»** İhtiyacım Olan İzinler;',
-                  value: `**•** ${missingClientPerms.map(perm => permissions[perm]).join("\n**•** ")}`,
+                  name: '**»** Permissions I Need;',
+                   value: `**•** ${missingClientPerms.map(perm => permissions[perm]).join("\n**•** ")}`,
                 },
               ]
             }
@@ -56,7 +56,7 @@ module.exports = async (client, interaction, cmd, guildData, userData, args = nu
         },
         missingClientPermsMessage = {
           content:
-            "**»** Bu komutu çalıştırabilmem için aşağıdaki izinlere ihtiyacım var!\n\n" +
+            "**»** I need the following permissions to run this command!\n\n" +
             `**•** ${missingClientPerms.map(perm => permissions[perm]).join("\n**•** ")}`,
           ephemeral: true
         };
@@ -80,7 +80,7 @@ module.exports = async (client, interaction, cmd, guildData, userData, args = nu
         embeds: [
           {
             color: client.settings.embedColors.red,
-            description: `**»** Bu komutu kullanabilmek için **${missingMemberPerms.map(perm => permissions[perm])}** yetkisine sahip olmalısın.`
+            description: `**»** You must have **${missingMemberPerms.map(perm => permissions[perm])}** privilege to use this command.`
           }
         ],
         ephemeral: true
@@ -92,8 +92,8 @@ module.exports = async (client, interaction, cmd, guildData, userData, args = nu
         embeds: [
           {
             color: client.settings.embedColors.red,
-            title: `**»** Bu Komut Yalnızca Slash Komutu Olarak Kullanılabilir!`,
-            description: `**•** Kullanmak için \`/${cmd.interaction.name}\` yazmalısın.`,
+            title: `**»** This Command Can Only Be Used As Slash Command!`,
+            description: `**•** You have to type \`/${cmd.interaction.name}\` to use it.`,
           }
         ]
       });
@@ -104,8 +104,8 @@ module.exports = async (client, interaction, cmd, guildData, userData, args = nu
         embeds: [
           {
             color: client.settings.embedColors.red,
-            title: '**»** Bu Komutu Yalnızca NSFW Kanallarda Kullanabilirsin!',
-            description: `**•** Kanal ayarlarından **Yaş Sınırlı Kanal** seçeneğini aktif etmelisin.`,
+            title: '**»** You Can Only Use This Command On NSFW Channels!',
+            description: `**•** You must activate the **Age Restricted Channel** option in the channel settings.`,
             image: {
               url: 'https://media.discordapp.net/attachments/767040721890312215/987277932084994158/unknown.png',
             },
@@ -123,7 +123,7 @@ module.exports = async (client, interaction, cmd, guildData, userData, args = nu
       //Topgg API bozuksa
       const topggStatus = client.clientDataCache.topggStatus;
       if (!topggStatus.status) {
-        client.logger.log(`${(interaction.user || interaction.author).id} kullanıcısına vote muaf verildi.`, "log", true, true);
+        client.logger.log(`${(interaction.user || interaction.author).id} User has been voted exempt.`, "log", true, true);
 
         if (Date.now() - topggStatus.lastCheck > 900000) {
           topggapi.hasVoted(user.id)
@@ -135,23 +135,23 @@ module.exports = async (client, interaction, cmd, guildData, userData, args = nu
       //Topgg API çalışıyorsa
       else if (!data.premium && !(await topggapi.hasVoted(user.id)
         .catch(error => {
-          client.logger.error(`Topgg Error: "${error}" - 15 dakikalığına topgg api muaf aktif edildi!`);
+          client.logger.error(`Topgg Error: "${error}" - Topgg api exempt enabled for 15 minutes!`);
           topggStatus = ({ status: false, lastCheck: Date.now() });
         })
       )) {
         return interaction.reply({
           embeds: [{
             color: client.settings.embedColors.red,
-            title: '**»** Bu Komutu Kullanmak İçin **TOP.GG** Üzerinden Oy Vermelisin!',
+            title: '**»** You Must Vote On **TOP.GG** To Use This Command!',
             url: 'https://top.gg/bot/700959962452459550/vote',
             description:
-              `**•** Oy vermek için aşağıdaki butonu kullanabilir ya da mesaj başlığına tıklayabilirsin.\n` +
-              `**•** Ya da en iyisi Nraphy Premium abonesi olabilirsin. \`/premium Bilgi\``,
+              `**•** You can use the button below or click the message title to vote.\n` +
+               `**•** Or best of all, you can become a Nraphy Premium subscriber.  \`/premium Info\``,
           }],
           components: [
             {
               type: 1, components: [
-                new Discord.ButtonBuilder().setLabel('Oy Bağlantısı (TOP.GG)').setURL("https://top.gg/bot/700959962452459550/vote").setStyle('Link')
+                new Discord.ButtonBuilder().setLabel('Vote Link (TOP.GG)').setURL("https://top.gg/bot/700959962452459550/vote").setStyle('Link')
               ]
             },
           ],
@@ -173,10 +173,9 @@ module.exports = async (client, interaction, cmd, guildData, userData, args = nu
           color: client.settings.embedColors.red,
           description:
             data.premium ?
-              `**»** Bu komutu tekrar kullanabilmen için **${Math.ceil((userDataCache_lastCmds_thisCmd + cmdCooldown - Date.now()) / 1000)} saniye** beklemelisin.`
+              `**»** You must wait **${Math.ceil((userDataCache_lastCmds_thisCmd + cmdCooldown - Date.now()) / 1000)} seconds** before you can use this command again.`
               :
-              `**»** Bu komutu tekrar kullanabilmen için **${Math.ceil((userDataCache_lastCmds_thisCmd + cmdCooldown - Date.now()) / 1000)} saniye** beklemelisin.\n` +
-              `**•** Nraphy Premium ile bekleme sürelerini kısaltabilirsin. \`/premium Bilgi\``
+              `**»** You must wait **${Math.ceil((userDataCache_lastCmds_thisCmd + cmdCooldown - Date.now()) / 1000)} seconds** before you can use this command again.\n` + `**•** You can reduce waiting times with Nraphy Premium.  \`/premium Info\``
         }],
         ephemeral: true
       });
