@@ -1,91 +1,123 @@
-module.exports = async (client, message) => {
+const permissions = require("../../utils/Permissions.json");
 
-  if (!message.guild) return;
-  if (!message.channel) return;
-  if (message.author.bot) return;
-  if (message.system) return;
-
-  const guildData = await client.database.fetchGuild(message.guild.id);
-  var userData;
-
-  const prefix = guildData.prefix || client.settings.prefix;
-
-  const userCache = client.userDataCache[message.author.id] || (client.userDataCache[message.author.id] = {});
+module.exports = async (client, member, autoRole, guildData) => {
 
   try {
 
-    //Commands
-    if (message.content.toLowerCase().startsWith(prefix.toLowerCase())) {
+    //---------------Role---------------//
 
-      //Checking if the message is a command
-      const args = message.content.slice(prefix.length).trim().split(/ +/g);
-      const commandName = args.shift().toLowerCase().replaceAll('-', '').toEN();
-      const cmd = client.commands.find(command => [(command.interaction || command).name, ...(command.aliases || [])].map(string => string.replaceAll('-', '').toEN()).includes(commandName));
-      if (!cmd) return;
+    if (!member.guild.roles.cache.has(autoRole.role)) {
 
-      userData ||= await client.database.fetchUser(message.author.id);
+      client.logger.log(`Auto-Role not found, resetting auto-role on server... • ${member.guild.name} (${member.guild.id})`);
+      guildData.autoRole = { role: null, channel: null, setupChannel: null };
+      guildData.markModified('autoRole');
+      await guildData.save();
 
-      await require('../events/functions/cmdExecuter.js')(client, message, cmd, guildData, userData, args);
-    }
-
-    const linkBlock = guildData.linkBlock;
-    const gallery = guildData.gallery;
-
-    //Bağlantı Engel
-    if (linkBlock && message.content)
-      //Galeri muaf
-      if (message.channel.id !== gallery) require("./functions/linkBlock")(client, message, linkBlock, false);
-
-    //Galeri
-    if (gallery && message.channel.id == gallery)
-      require("./functions/gallery.js")(client, message, gallery);
-
-    //Spam Koruması
-    const spamProtection = guildData.spamProtection;
-    if (spamProtection && message.content)
-      require("./functions/spamProtection.js")(client, message, spamProtection);
-
-    //CapsLock Block
-    //client.logger.log(`CAPSLOCK-EVENT TRIGGERED!  • ${message.guild.name} (${message.guild.id})`);
-    require("./functions/upperCaseBlock.js")(client, message, guildData);
-
-    //Word game
-    var wordGame = guildData.wordGame;
-    if (wordGame?.channel === message.channel.id) {
-      client.logger.log(`WORD-GAME IS TRIED!  • ${message.guild.name} (${message.guild.id})`, "log", false);
-      require("./functions/wordGame.js")(client, message, wordGame, guildData);
-    }
-
-    if (userCache.lastMessage && Date.now() - userCache.lastMessage < 2000)
-      return;
-    userCache.lastMessage = Date.now();
-
-    //Prefixim & Soru-Sor
-    if (message.content === `<@!${client.user.id}>` || message.content === `<@${client.user.id}>` || message.content === `<@&${client.user.id}>`) {
-
-      message.channel.send({
-        embeds: [{
-          color: client.settings.embedColors.default,
-          description: `**»** My Prefix \`${prefix}\` • You can access all commands by typing \`${prefix}commands\`.`
-        }]
-      }).catch(e => { });
+      return member.guild.channels.cache.get(autoRole.setupChannel)?.send({
+        embeds: [
+          {
+            color: client.settings.embedColors.red,
+            title: '**»** Auto-Role Reset Because No Auto-Role Role Found!',
+            description: `**•** You can use the \`/set-role\` command to set it up again.`
+          }
+        ]
+      });
 
     }
 
-    userData ||= await client.database.fetchUser(message.author.id, false);
+    if (member.guild.roles.cache.get(autoRole.role).rawPosition >= member.guild.members.me.roles.highest.rawPosition) {
 
-    //AFK
-    if (userData?.AFK?.time) {
-      client.logger.log(`AFK SYSTEM TRIGGERED!  • ${message.guild.name} (${message.guild.id})`);
-      require("./functions/AFK.js").removeAFK(client, message, userData);
+      client.logger.log(`Auto-role is reset on the server because I don't have permission to assign the auto-role... • ${member.guild.name} (${member.guild.id})`);
+      guildData.autoRole = { role: null, channel: null, setupChannel: null };
+      guildData.markModified('autoRole');
+      await guildData.save();
+
+      return member.guild.channels.cache.get(autoRole.setupChannel)?.send({
+        embeds: [
+          {
+            color: client.settings.embedColors.red,
+            title: '**»** Auto-Role Reset Because No Authorization Could Be Found to Grant Auto-Role!',
+            description: `**•** You can use the \`/set-role\` command to set it up again.`
+          }
+        ]
+      });
+
     }
-    if (message.mentions.users.first()) {
-      let mentionUserData = await client.database.fetchUser(message.mentions.users.first().id, false);
-      if (mentionUserData?.AFK?.time) {
-        client.logger.log(`AFK SYSTEM TRIGGERED!  • ${message.guild.name} (${message.guild.id})`);
-        require("./functions/AFK.js").userIsAFK(client, message, mentionUserData);
+
+    await member.roles.add(autoRole.role);
+
+    //---------------Role---------------//
+
+    //---------------Channel---------------//
+
+    if (!autoRole.channel) return;
+
+    if (!member.guild.channels.cache.has(autoRole.channel)) {
+
+      client.logger.log(`Auto-role channel not found, resetting auto-role channel on server... • ${member.guild.name} (${member.guild.id})`);
+      guildData.autoRole.channel = null;
+      guildData.markModified('autoRole.channel');
+      await guildData.save();
+
+      return member.guild.channels.cache.get(autoRole.setupChannel)?.send({
+        embeds: [
+          {
+            color: client.settings.embedColors.red,
+            title: '**»** Auto-Role Channel Reset Because Auto-Role Channel Could Not Be Found!',
+            description: `**•** You can use \`/auto-role Set Channel\` command to set it up again.`
+          }
+        ]
+      });
+
+    }
+
+    let clientPerms = [];
+    ["ViewChannel", "SendMessages", "EmbedLinks"].forEach((perm) => {
+      if (!member.guild.channels.cache.get(autoRole.channel).permissionsFor(member.guild.members.me).has(perm)) {
+        clientPerms.push(permissions[perm]);
       }
+    });
+
+    if (clientPerms.length > 0) {
+
+      client.logger.log(`Auto-Role channel is reset because I don't have one/more privileges on the Auto-Role channel... • ${member.guild.name} (${member.guild.id})`);
+      guildData.autoRole.channel = null;
+      guildData.markModified('autoRole');
+      await guildData.save();
+
+      return member.guild.channels.cache.get(autoRole.setupChannel)?.send({
+        embeds: [{
+          color: client.settings.embedColors.red,
+          author: {
+            name: `I Don't Have The Permissions To Post To The Auto-Role Channel!`,
+            icon_url: member.guild.iconURL(),
+          },
+          description: `**»** I reset the autorole channel because I don't have enough privileges on ${member.guild.channels.cache.get(autoRole.channel)}.`,
+          fields: [
+            {
+              name: '**»** Permissions I Need;',
+              value: "**•** " + clientPerms.map((p) => `${p}`).join("\n**•** "),
+            },
+          ]
+        }]
+      });
+
     }
+
+    member.guild.channels.cache.get(autoRole.channel).send({
+      embeds: [{
+        color: client.settings.embedColors.default,
+        author: {
+          name: `${member.user.username} has joined the server!`,
+          icon_url: member.user.avatarURL(),
+        },
+        description: `**»** Welcome!  I automatically assigned the <@&${autoRole.role}> role.`,
+      }]
+    });
+
+
+
+    //---------------Channel---------------//
 
   } catch (err) { client.logger.error(err); };
 };
