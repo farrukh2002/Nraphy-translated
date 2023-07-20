@@ -216,4 +216,4 @@ exports.debug = (...args) => this.log(...args, 'debug');
 exports.interaction = (...args) => this.log(...args, 'interaction');
 exports.ready = (...args) => this.log(...args, 'ready');
 exports.load = (...args) => this.log(...args, 'load');
-exports.event = (...args) => this.log(...args, 'event'
+exports.event = (...args) => this.log(...args, 'event');
