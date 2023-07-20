@@ -142,4 +142,12 @@ module.exports = {
         components: [
           {
             data: { type: 1 }, components: [
-              new ButtonBuilder().setLabel('Support Server').setURL(`https://discord.gg/QvaDHvuYVm`).setStyle('Lin
+              new ButtonBuilder().setLabel('Support Server').setURL(`https://discord.gg/QvaDHvuYVm`).setStyle('Link')
+              ]
+          },
+        ]
+      });
+    }
+
+  }
+};
