@@ -4,8 +4,8 @@ module.exports = {
 
   buttonConfirmation: async function (interaction, confirmationEmbeds, confirmatoryUserId = null) {
 
-    const confirmButton = new ButtonBuilder().setLabel('Onayla').setCustomId("confirmButton").setStyle('Success');
-    const denyButton = new ButtonBuilder().setLabel('İptal Et').setCustomId("denyButton").setStyle('Danger');
+    const confirmButton = new ButtonBuilder().setLabel('Approve').setCustomId("confirmButton").setStyle('Success');
+    const denyButton = new ButtonBuilder().setLabel('Cancel').setCustomId("denyButton").setStyle('Danger');
 
     const reply = await interaction.reply({
       embeds: confirmationEmbeds,
@@ -105,8 +105,8 @@ module.exports = {
         embeds: [
           {
             color: interaction.client.settings.embedColors.red,
-            title: '**»** Bir Mesaj Belirtmelisin!',
-            description: `**•** Örnek kullanım: \`/${example}\``
+            title: '**»** You Must Specify a Message!',
+            description: '**»** Example usage: \`/${example}\``
           }
         ]
       });
@@ -118,8 +118,8 @@ module.exports = {
         embeds: [
           {
             color: interaction.client.settings.embedColors.red,
-            title: '**»** Çok Uzun Bir Yazı Belirttin!',
-            description: `**•** Mesajın **180** karakterden daha kısa olmalı.`
+            title: '**»** You have Made a Very Long Post!',
+            description: `**•** Your message must be shorter than **180** characters.`
           }
         ]
       });
@@ -131,8 +131,8 @@ module.exports = {
         embeds: [
           {
             color: interaction.client.settings.embedColors.red,
-            title: '**»** Bu Komut İle Reklam Yapamazsın!',
-            description: `**•** Mesajında herhangi bir Discord sunucusu davet bağlantısı olmamalıdır.`
+            title: '**»** You Can not Advertise With This Command!',
+            description: `**•** Your message must not contain any Discord server invite links.`
           }
         ]
       });
@@ -144,8 +144,8 @@ module.exports = {
         embeds: [
           {
             color: interaction.client.settings.embedColors.red,
-            title: '**»** Bu Komut İle **@everyone & @here** Atamazsın!',
-            description: `**•** Mesajında herhangi bir toplu etiket olmamalıdır.`
+            title: '**»** You Can not Throw **@everyone and @here** With This Command!',
+            description: `**•** Your message should not contain any bulk tags.`
           }
         ]
       });
@@ -164,8 +164,8 @@ module.exports = {
           embeds: [
             {
               color: interaction.client.settings.embedColors.red,
-              title: '**»** Rolü Bulamadım!',
-              description: `**•** Geçerli bir rol ID'si belirtmelisin.`
+              title: '**»** Could not Find The Role!',
+              description: `**•** You must specify a valid role ID.`
             }
           ]
         });
@@ -177,8 +177,8 @@ module.exports = {
         embeds: [
           {
             color: interaction.client.settings.embedColors.red,
-            title: '**»** Belirttiğin Rolü Verme Yetkim Bulunmuyor!',
-            description: `**•** Bu rolün üstünde bir role sahip olmalıyım.`
+            title: '**»** I do not have the authority to give the role you specified!',
+            description: `**•** I must have a role above this role.`
           }
         ]
       });
@@ -188,7 +188,7 @@ module.exports = {
         embeds: [
           {
             color: interaction.client.settings.embedColors.red,
-            title: '**»** \`@everyone\` mu?!',
+            title: '**»** @everyone?!',
             description: `**•** What?`
           }
         ]
@@ -199,8 +199,8 @@ module.exports = {
         embeds: [
           {
             color: interaction.client.settings.embedColors.red,
-            title: '**»** B-Bu Rolü Seçemezsin!',
-            description: `**•** İzin vermiyorum. Hem bu rolü veremem ki.`
+            title: '**»**You Can not Choose This Role!',
+            description: `**•** I do not allow.  And I can not give this role.`
           }
         ]
       });
@@ -210,8 +210,8 @@ module.exports = {
         embeds: [
           {
             color: interaction.client.settings.embedColors.red,
-            title: '**»** Booster Rolü mü?',
-            description: `**•** Butona tıklayan booster olacak yani? Olamaz. Huh!`
+            title: '**»** Booster Role?',
+            description: `**•** So the button clicker will be the booster?  I can not be.  Huh!`
           }
         ]
       });
@@ -239,8 +239,8 @@ module.exports = {
         embeds: [
           {
             color: interaction.client.settings.embedColors.red,
-            title: '**»** Bu Sunucuda Olmayan Bir Kanalı Etiketleyemezsin!',
-            description: `**•** Yapma işte. Yapma. Hoşlanmıyorum diyorum bu şakalardan. Hıh.`
+            title: '**»** You can not tag a channel that is not on this server!',
+            description: `**•** Don't do it.  Don't do that.  I say I don't like these jokes.  Huh.`
           }
         ]
       });
@@ -250,8 +250,8 @@ module.exports = {
         embeds: [
           {
             color: interaction.client.settings.embedColors.red,
-            title: `**»** Geçerli Bir Kanal Belirtmelisin!`,
-            description: `**•** Belirttiğin kanal, oda veya kategori olmamalı. Sadece yazı kanalı.`,
+            title: `**»** You Must Specify a Valid Channel!`,
+            description: `**•** The channel you specified should not be a room or category.  Text channel only.`,
           }
         ],
       });
@@ -262,8 +262,8 @@ module.exports = {
           embeds: [
             {
               color: interaction.client.settings.embedColors.red,
-              title: `**»** Etiketlediğin Kanalda **${permissionsMap[permission]}** Yetkim Bulunmuyor!`,
-              description: `**•** İzinlerimi kontrol et ve tekrar dene.`
+              title: `**»** **${permissionsMap[permission]}** I Do not Have Authority on the Channel You Tagged!`,
+              description: `**•** Check my permissions and try again.`
             }
           ]
         });
