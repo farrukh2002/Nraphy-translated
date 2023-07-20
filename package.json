@@ -1,11 +1,11 @@
 {
   "name": "nraphy",
-  "description": "Tam fonksiyonlu Nraphy Discord botu!",
+  "description": "Fully functional Nraphy Discord bot!",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RFKaya/Nraphy.git"
   },
-  "author": "RFKaya",
+  "author": "RFKaya Translated by Farrukh",
   "main": "client.js",
   "dependencies": {
     "@discordjs/opus": "^0.9.0",
