@@ -12,19 +12,19 @@ module.exports = async (client) => {
 
     //------------------------------Logging------------------------------//
     setInterval(() => {
-      //Guild logları
+      //Guild logs
       for (const guildId in client.guildDataCache) {
         (async function () {
 
           const guildDataCache = client.guildDataCache[guildId];
 
-          let gönderilecekLoglar = guildDataCache.logQueue?.splice(0, 10);
-          if (!gönderilecekLoglar?.length) return;
+          let Logstobesent = guildDataCache.logQueue?.splice(0, 10);
+          if (!Logstobesent?.length) return;
 
           const guildData = await client.database.fetchGuild(guildId);
 
           let webhookClient = new WebhookClient({ url: guildData.logger.webhook });
-          webhookClient.send({ embeds: gönderilecekLoglar })
+          webhookClient.send({ embeds: Logstobesent })
             .catch(async error => {
               if (error.code == 10015) {
                 guildData.logger.webhook = null;
@@ -38,19 +38,19 @@ module.exports = async (client) => {
         })();
       }
 
-      //Client logları
+      //Client logs
 
-      let gönderilecekLoglar_Client = client.clientDataCache.logQueue?.splice(0, 10);
-      if (!gönderilecekLoglar_Client.length) return;
+      let Logstobesent_Client = client.clientDataCache.logQueue?.splice(0, 10);
+      if (!Logstobesent_Client.length) return;
 
       if (client.config.clientLogsWebhookURL) {
 
         let webhookClient_Client = new WebhookClient({ url: client.config.clientLogsWebhookURL });
-        webhookClient_Client.send({ embeds: gönderilecekLoglar_Client })
+        webhookClient_Client.send({ embeds: Logstobesent_Client })
           .catch(async error => client.logger.error(error));
       } else {
 
-        client.logger.log("config.js üzerindeki \"clientLogsWebhookURL\" tanımlanmadığı için bir grup log, webhook ile gönderilmedi!", "log", false);
+        client.logger.log("A bunch of logs were not sent via webhook because \"clientLogsWebhookURL\" on config.js is not defined!", "log", false);
 
       }
 
@@ -65,7 +65,7 @@ module.exports = async (client) => {
 
     //------------------------------Mongoose------------------------------//
 
-    //------------------------------Oynuyor------------------------------//
+    //------------------------------Playing------------------------------//
 
     await client.user.setPresence({
       activities: [{
@@ -75,9 +75,9 @@ module.exports = async (client) => {
       //status: "online", //online, idle, dnd
     });//.catch(console.error);
 
-    //------------------------------Oynuyor------------------------------//
+    //------------------------------Playing------------------------------//
 
-    //------------------------------Presence Yenileme & Otomatik Yeniden Başlatmalar & GIBIRNet Abonesi Rolü------------------------------//
+    //------------------------------Presence Renewal & Automatic Restarts & GIBIRNet Subscriber Role------------------------------//
 
     setInterval(async function () {
 
@@ -97,9 +97,7 @@ module.exports = async (client) => {
         && process.memoryUsage().rss > (2048 * (1024 ** 2))
         && (client.voice.adapters.size < 2 || client.distube.queues.size < 2)
       ) {
-        await client.logger.warn(`SHARD BAŞINA RAM KULLANIMI 2 GB'ı AŞTIĞI İÇİN SHARD YENİDEN BAŞLATILIYOR!\n\n` +
-          `client.voice.adapters.size: ${client.voice.adapters.size}\n` +
-          `client.distube.queues.size: ${client.distube.queues.size}`
+        await client.logger.warn(`SHARD IS RE-RESTORING BECAUSE THE RAM USE PER SHARD EXCEEDS 2GB!\n\n`+ `client.voice.adapters.size: ${client.voice.adapters.size}\n` + `client.disturb.queue.size: ${client.disturb.queue.size}`
         );
         process.exit(0);
       }
@@ -114,11 +112,11 @@ module.exports = async (client) => {
         process.exit(0);
       };
 
-      //Bot Durum
+      //Bot Status
       let randomPresence;
 
       let nowDate = new Date();
-      if (nowDate.getDate() == 19 && (nowDate.getMonth() + 1) == 5) randomPresence = "❤️ #19Mayıs";
+      if (nowDate.getDate() == 19 && (nowDate.getMonth() + 1) == 5) randomPresence = "❤️ #May 19th";
       else randomPresence = client.settings.presences[Math.floor(Math.random() * client.settings.presences.length)];
 
       client.user.setPresence({
@@ -130,10 +128,10 @@ module.exports = async (client) => {
 
     }, 600000);
 
-    //Otomatik Yeniden Başlatma (Bot sorunlu başlatıldıysa)
+    //Automatic Restart (If the bot started with problems)
     setTimeout(function () {
       if (!client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)) {
-        client.logger.warn("SHARD SORUNLU OLARAK BAŞLATILDIĞI İÇİN YENİDEN BAŞLATILIYOR!");
+        client.logger.warn("SHARD RESTARTED BECAUSE IT STARTED PROBABLY!");
         process.exit(0);
       };
     }, 300000);
@@ -164,7 +162,7 @@ module.exports = async (client) => {
       });
     }, 30000);
 
-    //------------------------------Davet Sistemi------------------------------//
+    //------------------------------Invitation System------------------------------//
 
   } catch (err) { client.logger.error(err); };
 };
