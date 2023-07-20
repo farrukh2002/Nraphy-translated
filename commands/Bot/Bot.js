@@ -496,7 +496,7 @@ module.exports = {
                 embeds: [
                   {
                     color: client.settings.embedColors.red,
-                    description: "🔒 This place is special for my brother Rauqq!”
+                    description: `🔒 This place is special for my brother Rauqq!`
                   }
                 ],
                 components: [
