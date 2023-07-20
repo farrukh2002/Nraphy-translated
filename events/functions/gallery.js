@@ -2,13 +2,13 @@ module.exports = async (client, message, gallery) => {
 
   try {
 
-    //Mesaj sahibi kanalları yönet yetkisine sahip değilse
+    //If the message owner does not have the authority to manage channels
     if (message.channel.permissionsFor(message.member).has("ManageChannels")) return;
 
-    //Mesaj eklenti içeriyormiyorsa
+    //If the message does not contain attachments
     if (message.attachments.size) return;
 
-    //Mesajda bağlantılı bir eklenti yoksa
+    //If the message does not have a linked attachment
     if (message.content.match(/\bhttps?:\/\/\S+/gi)?.find(url =>
       url.endsWith(".png") ||
       url.endsWith(".jpg") ||
@@ -19,13 +19,13 @@ module.exports = async (client, message, gallery) => {
     //let repliedMessage;
     //if (message.reference) await message.channel.messages.fetch(message.reference.messageId).then(repliedMsg => repliedMessage = repliedMsg);
 
-    //Alıntılanmış yoksa ya da alıntılanmış mesajın eklentisi yoksa
+    //There is not quoted or the quoted message has no attachment
     //if (!repliedMessage || repliedMessage.attachments.size == 0) {
 
-    message.delete({ reason: `Nraphy Galeri sistemi.` })
+    message.delete({ reason: `Nraphy Gallery system.` })
       .catch(e => { });
 
-    //Uyarı Metni
+    //Warning Text
     const userCache = client.userDataCache[message.author.id] || (client.userDataCache[message.author.id] = {});
     if (!userCache?.lastWarn || Date.now() - userCache.lastWarn > 5000) {
       userCache.lastWarn = Date.now();
@@ -34,8 +34,8 @@ module.exports = async (client, message, gallery) => {
         embeds: [
           {
             color: client.settings.embedColors.red,
-            title: '**»** Bu Kanalda Sadece **Fotoğraf/Video** Paylaşabilirsin!',
-            description: `**•** Bu kanal, bir galeri kanalı olarak ayarlanmıştır.`
+            title: '**»** You Can Only Share **Photo/Video** On This Channel!',
+            description: `**•** This channel is set as a gallery channel.`
           }
         ]
       }).then(msg => setTimeout(() => msg.delete().catch(e => { }), 5000));
