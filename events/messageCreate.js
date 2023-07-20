@@ -46,13 +46,13 @@ module.exports = async (client, message) => {
       require("./functions/spamProtection.js")(client, message, spamProtection);
 
     //CapsLock Block
-    //client.logger.log(`CAPSLOCK-ENGEL TETİKLENDİ! • ${message.guild.name} (${message.guild.id})`);
+    //client.logger.log(`CAPSLOCK-EVENT TRIGGERED!  • ${message.guild.name} (${message.guild.id})`);
     require("./functions/upperCaseBlock.js")(client, message, guildData);
 
-    //Kelime Oyunu
+    //Word game
     var wordGame = guildData.wordGame;
     if (wordGame?.channel === message.channel.id) {
-      client.logger.log(`KELİME-OYUNU TETİKLENDİ! • ${message.guild.name} (${message.guild.id})`, "log", false);
+      client.logger.log(`WORD-GAME IS TRIED!  • ${message.guild.name} (${message.guild.id})`, "log", false);
       require("./functions/wordGame.js")(client, message, wordGame, guildData);
     }
 
@@ -66,7 +66,7 @@ module.exports = async (client, message) => {
       message.channel.send({
         embeds: [{
           color: client.settings.embedColors.default,
-          description: `**»** Prefixim \`${prefix}\` • \`${prefix}komutlar\` yazarak tüm komutlara ulaşabilirsin.`
+          description: `**»** My Prefix \`${prefix}\` • You can access all commands by typing \`${prefix}commands\`.`
         }]
       }).catch(e => { });
 
@@ -76,13 +76,13 @@ module.exports = async (client, message) => {
 
     //AFK
     if (userData?.AFK?.time) {
-      client.logger.log(`AFK SİSTEMİ TETİKLENDİ! • ${message.guild.name} (${message.guild.id})`);
+      client.logger.log(`AFK SYSTEM TRIGGERED!  • ${message.guild.name} (${message.guild.id})`);
       require("./functions/AFK.js").removeAFK(client, message, userData);
     }
     if (message.mentions.users.first()) {
       let mentionUserData = await client.database.fetchUser(message.mentions.users.first().id, false);
       if (mentionUserData?.AFK?.time) {
-        client.logger.log(`AFK SİSTEMİ TETİKLENDİ! • ${message.guild.name} (${message.guild.id})`);
+        client.logger.log(`AFK SYSTEM TRIGGERED!  • ${message.guild.name} (${message.guild.id})`);
         require("./functions/AFK.js").userIsAFK(client, message, mentionUserData);
       }
     }
