@@ -85,7 +85,7 @@ module.exports = {
       },
       fields: [
         {
-          name: '**»** 'Notice',
+          name: '**»** Notice',
           value: "```" + suggestion + "```",
         },
       ],
