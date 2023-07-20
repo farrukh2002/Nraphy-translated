@@ -106,7 +106,7 @@ module.exports = {
           {
             color: interaction.client.settings.embedColors.red,
             title: '**»** You Must Specify a Message!',
-            description: '**»** Example usage: \`/${example}\``
+            description: `**»** Example usage: \`/${example}\``,
           }
         ]
       });
@@ -118,7 +118,7 @@ module.exports = {
         embeds: [
           {
             color: interaction.client.settings.embedColors.red,
-            title: '**»** You have Made a Very Long Post!',
+            title: '**»** You have Made a Very Long Post!`,
             description: `**•** Your message must be shorter than **180** characters.`
           }
         ]
