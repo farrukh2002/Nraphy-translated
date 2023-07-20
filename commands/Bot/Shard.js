@@ -72,4 +72,7 @@ module.exports = {
 
       await interaction.reply({ content: "I couldn't get the data for reasons beyond my control :/" });
 
-  
+    }
+    
+  }
+};
