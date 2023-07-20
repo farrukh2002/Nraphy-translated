@@ -4,7 +4,7 @@ const config = require("./config.json");
 const logger = require("./modules/Logger.js");
 
 if (!config.mongooseToken)
-  return logger.error('config.json\'da \'mongooseToken\' değeri bulunamadı. Hatalarla karşılaşmamak için lütfen doğru biçimde mongooseToken değerini doldurun.');
+  return logger.error('Value \'mongooseToken\' not found in config.json.  Please fill in the mongooseToken value correctly to avoid errors.');
 
 const manager = new ShardingManager('./client.js', {
 
@@ -21,10 +21,10 @@ const manager = new ShardingManager('./client.js', {
 manager.on('shardCreate', (shard) => {
   //logger.shard(`Shard ${shard.id + 1} is starting...`);
 
-  shard.on('death', () => logger.warn(`Shard ${shard.id + 1} death eventi yolladı!`));
+  shard.on('death', () => logger.warn(`Shard ${shard.id + 1} sent the death event!`));
   shard.on("disconnect", (event) => logger.error(event));
   //shard.on('ready', () => logger.ready(`Shard ${shard.id + 1} is now up and running!`));
-  shard.on('error', (err) => logger.error(`Shard ${shard.id + 1}'de sıkıntı cıktı hocisim!: \n` + (err.message ? err.message : err)));
+  shard.on('error', (err) => logger.error(`Shard ${shard.id + 1}'There's trouble too, teacher!: \n` + (err.message ? err.message : err)));
 });
 
 try {
