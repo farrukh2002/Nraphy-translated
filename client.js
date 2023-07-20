@@ -46,26 +46,26 @@ global.client = client;
 
 const interactionCommands = [];
 
-//Veri Tabanı yerel hafıza
+//Database local memory
 global.localDatabase = { guilds: {}, users: {} };
 client.guildsWaitingForSync = [];
 
-//Gereksiz database
+//Unnecessary database
 client.userDataCache = {};
 client.guildDataCache = {};
 client.clientDataCache = { topggStatus: { status: true, lastCheck: null }, logQueue: [] };
 
-//kaldırılacak bunlar
+//they will be removed
 client.guildInvites = new Map();
 client.gamesPlaying = new Map();
 client.usersMap = new Map();
 client.warnsMap = new Map();
 
-//------------------------------Ayarlar------------------------------//
+//------------------------------Settings------------------------------//
 
 client.settings = {
   presences: [
-    "📌 /komutlar"
+    "📌 /commands"
   ],
   prefix: "n!",
   owner: "700385307077509180",
@@ -81,9 +81,9 @@ client.settings = {
   invite: "https://discord.com/oauth2/authorize?client_id=700959962452459550&permissions=8&redirect_uri=https://discord.gg/VppTU9h&scope=applications.commands%20bot&response_type=code"
 };
 
-//------------------------------Ayarlar------------------------------//
+//------------------------------Settings------------------------------//
 
-//------------------------------Kurulum------------------------------//
+//------------------------------Setup------------------------------//
 
 client.events = new Discord.Collection();
 client.commands = new Discord.Collection();
@@ -100,7 +100,7 @@ client.listGuilds = async function () {
     guild.forEach(g => guilds.push(g.id));
   return guilds;
 };
-client.capitalizeFirstLetter = ([first, ...rest], locale = "tr-TR") => first.toLocaleUpperCase(locale) + rest.join('');
+client.capitalizeFirstLetter = ([first, ...rest], locale = "en-EN") => first.toLocaleUpperCase(locale) + rest.join('');
 client.wait = ms => new Promise(res => setTimeout(res, ms));
 client.removeConsecutiveDuplicates = function removeConsecutiveDuplicates(input) {
   if (input.length <= 1)
@@ -209,9 +209,9 @@ process.on('uncaughtException', (err) => {
 
 //require('events').EventEmitter.prototype._maxListeners = 100;
 
-//------------------------------Kurulum------------------------------//
+//------------------------------Setup------------------------------//
 
-//------------------------------Müzik------------------------------//
+//------------------------------Music------------------------------//
 
 const { DisTube } = require('distube');
 const { SpotifyPlugin } = require('@distube/spotify');
@@ -254,7 +254,7 @@ client.distube
   .on('addSong', (queue, song) => {
     let embed = {
       color: client.settings.embedColors.green,
-      title: `**»** Sıraya Bir Şarkı Eklendi!`,
+      title: `**»** A Song Has Been Added To The Queue!`,
       description: `**•** [${song.name}](${song.url})`,
       thumbnail: {
         url: song.thumbnail,
@@ -267,10 +267,10 @@ client.distube
   .on('addList', (queue, playlist) => {
     let embed = {
       color: client.settings.embedColors.green,
-      title: `**»** Sıraya Bir Oynatma Listesi Eklendi!`,
+      title: `**»** A Playlist Has Been Added To The Queue!`,
       description:
         `**•** [${playlist.name}](${playlist.url})\n` +
-        `**•** Sıraya **${playlist.songs.length}** şarkı eklendi.`,
+        `**•** Added **${playlist.songs.length}** songs to the queue.`,
       thumbnail: {
         url: playlist.thumbnail,
       },
@@ -289,8 +289,8 @@ client.distube
       embeds: [
         {
           color: client.settings.embedColors.red,
-          title: `**»** Oynatma Sonlandırıldı!`,
-          description: `**•** Odada kimse kalmadığı için oynatma bitirildi.`,
+          title: `**»** Playback Ended!`,
+           description: `**»** Play has ended because there is no one left in the room.`,
         }
       ]
     }).catch(e => { });
@@ -300,7 +300,7 @@ client.distube
       embeds: [
         {
           color: client.settings.embedColors.red,
-          description: `**»** Bir sonuç bulunamadı!`,
+          description: `**»** No results found!`,
         }
       ]
     }).catch(e => { });
@@ -310,8 +310,8 @@ client.distube
       embeds: [
         {
           color: client.settings.embedColors.default,
-          title: `**»** Oynatma Sonlandırıldı!`,
-          description: `**•** Sırada şarkı kalmadığı için oynatma bitirildi!`,
+          title: `**»** Playing Ended!`,
+           description: `**»** Playback ended because there are no songs left in the queue!`,
         }
       ]
     }).catch(e => { });
@@ -320,9 +320,9 @@ client.distube
     queue.volume = 80;
   });
 
-//------------------------------Müzik------------------------------//
+//------------------------------Music------------------------------//
 
-//------------------------------Log Sistemi------------------------------//
+//------------------------------Log Systems------------------------------//
 
 //Starting all events
 const eventFiles = fs.readdirSync('./events/logger/').filter(file => file.endsWith('.js'));
@@ -334,9 +334,9 @@ for (const file of eventFiles) {
   client.on(eventName, event.bind(null, client));
 }
 
-//------------------------------Log Sistemi------------------------------//
+//------------------------------Log Systems------------------------------//
 
-//------------------------------Davet Sistemi Başlangıç------------------------------//
+//------------------------------Invitation System Getting Started------------------------------//
 
 client.on('inviteCreate', async invite => {
 
@@ -353,7 +353,7 @@ client.on('inviteCreate', async invite => {
   }
 });
 
-//------------------------------Davet Sistemi Bitiş------------------------------//
+//------------------------------Invitation System End------------------------------//
 
 String.prototype.toEN = function () {
   return this//UPPERS:     // LOWERS:
