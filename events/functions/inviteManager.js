@@ -6,7 +6,7 @@ module.exports = async (client, member, inviteManager, guildData) => {
 
     if (!member.guild.channels.cache.has(inviteManager.channel)) {
 
-      client.logger.log(`Davet kanalı bulunamadı, sunucudaki davet sistemi sıfırlanıyor... • ${member.guild.name} (${member.guild.id})`);
+      client.logger.log(`No invite channel found, resetting the invite system on the server... • ${member.guild.name} (${member.guild.id})`);
       guildData.inviteManager = undefined;
       await guildData.save();
 
@@ -14,8 +14,8 @@ module.exports = async (client, member, inviteManager, guildData) => {
         embeds: [
           {
             color: client.settings.embedColors.red,
-            title: '**»** Davet Kanalı Bulunamadığı İçin Davet Sistemi Sıfırlandı!',
-            description: `**•** Tekrar ayarlamak için \`/davet-sistemi Ayarla\` komutunu kullanabilirsiniz.`
+            title: '**»** Invite System Reset Because Invite Channel Could Not Be Found!',
+            description: `**•** You can use the command \`/invite-system\` to set it up again.`
           }
         ]
       });
@@ -31,7 +31,7 @@ module.exports = async (client, member, inviteManager, guildData) => {
 
     if (clientPerms.length > 0) {
 
-      client.logger.log(`Davet kanalında bir/birkaç yetkim bulunmadığı için davet sistemi sıfırlanıyor... • ${member.guild.name} (${member.guild.id})`);
+      client.logger.log(`The invite system is reset because I don't have one/several privileges in the invite channel... • ${member.guild.name} (${member.guild.id})`);
       guildData.inviteManager = undefined;
       await guildData.save();
 
@@ -39,13 +39,13 @@ module.exports = async (client, member, inviteManager, guildData) => {
         embeds: [{
           color: client.settings.embedColors.red,
           author: {
-            name: `Davet Sistemini Çalıştırabilmem İçin Gereken İzinlere Sahip Değilim!`,
+            name: `I Don't Have the Permissions to Run the Invite System!`,
             icon_url: member.guild.iconURL(),
           },
-          description: `**»** ${member.guild.channels.cache.get(inviteManager.channel)} kanalında yeterli yetkiye sahip olmadığım için davet sistemini sıfırladım.`,
+          description: `**»** I reset the invite system because I didn't have enough privileges on the ${member.guild.channels.cache.get(inviteManager.channel)} channel.`,
           fields: [
             {
-              name: '**»** İhtiyacım Olan İzinler;',
+              name: '**»** Permissions I Need;',
               value: "**•** " + clientPerms.map((p) => `${p}`).join("\n**•** "),
             },
           ]
@@ -82,12 +82,12 @@ module.exports = async (client, member, inviteManager, guildData) => {
       color: client.settings.embedColors.green,
       //title: `${usedInvite.url}`,
       author: {
-        name: `${member.user.tag} Katıldı!`,
+        name: `${member.user.tag} Joined!`,
         icon_url: member.user.displayAvatarURL(),
       },
       description: (!usedInvite || member.user.bot)
-        ? `📩 • Davet eden bulunamadı.`
-        : `📩 • **${usedInvite.inviter.tag}** tarafından davet edildi. (**${inviteManager.invites?.[usedInvite.inviter.id]?.length || 1}** daveti bulunuyor.)`,
+        ? `📩 • The inviter was not found.`
+        : `📩 • Invited by **${used Invite.inviter.tag}**.  (There is an invite **${invite Manager.invites?.[usedInvite.inviter.id]?.length || 1}**.)`,
       //.setDescription(`${member.user.tag} is the ${member.guild.memberCount} to join.\nJoined using ${usedInvite.inviter.tag}\nNumber of uses: ${usedInvite.uses}`)
     };
 
