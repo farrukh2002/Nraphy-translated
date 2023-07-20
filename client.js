@@ -146,7 +146,7 @@ async function startUp() {
       //console.log(`${files.length} command will be loaded.`);
       for (let commandFile of commandCategoryFiles) {
         let command = require(`./commands/${commandCategory}/${commandFile}`);
-        //console.log(`Loaded command: ${command.name}`);
+        console.log(`Loaded command: ${command.name}`);
         client.commands.set(command.interaction ? command.interaction.name : command.name, command);
         if (command.interaction)
           interactionCommands.push(command.interaction);
