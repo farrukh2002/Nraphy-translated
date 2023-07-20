@@ -451,7 +451,7 @@ module.exports = {
                     `**•** Auto-Reply: \`${autoReply_guilds} Server\`\n` +
                     `**•** Auto-Role: \`${autoRole_guilds} Server\`\n` +
                     `**•** Counter: \`${memberCounter_guilds} Server\`\n` +
-                    `**•** Spam Protection: \`${spam Protection guilds} Server\`\n` +
+                    `**•** Spam Protection: \`${spamProtection_guilds} Server\`\n` +
                     `**•** Warnings: \`${warns_users} User, ${warns_warns} Warning\`\n` +
                     `**•** Word Game: \`${wordGame_guilds} Server\`\n` +
                     `**•** Count Count: \`${countingGame_guilds} Server\``,
