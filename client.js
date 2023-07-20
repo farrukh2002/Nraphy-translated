@@ -143,7 +143,7 @@ async function startUp() {
   commandCategories.forEach(commandCategory => {
     fs.readdir(`./commands/${commandCategory}/`, (err, commandCategoryFiles) => {
       if (err) console.error(err);
-      console.log(`${files.length} command will be loaded.`);
+      //console.log(`${files.length} command will be loaded.`);
       for (let commandFile of commandCategoryFiles) {
         let command = require(`./commands/${commandCategory}/${commandFile}`);
         client.commands.set(command.interaction ? command.interaction.name : command.name, command);
