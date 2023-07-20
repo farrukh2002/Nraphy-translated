@@ -28,7 +28,7 @@ module.exports.removeAFK = async (client, message, userData) => {
               },
               {
                 name: '**»** Time to AFK',
-                value: `**•** ${zaman}`,
+                value: `**•** ${time}`,
               },
             ],
           }
