@@ -92,14 +92,14 @@ exports.error = async (content) => {
     //Webhook Log
     global.client.clientDataCache.logQueue.push({
       color: 0xE74C3C,
-      title: `**»** Hata Oluştu! (\`${dateNow}\`)`,
+      title: `**»** An error occurred!  (\`${dateNow}\`)`,
       description: `\`\`\`${content}\`\`\``,
     });
 
 
   } catch (error) {
 
-    console.log(chalk.red("KRİTİK HATA! HATA LOGLAMA SİSTEMİNDE BİR HATA MEYDANA GELDİ!"));
+    console.log(chalk.red("CRITICAL ERROR!  AN ERROR OCCURRED IN ERROR LOGGING SYSTEM!"));
     console.log(error);
 
   }
@@ -125,7 +125,7 @@ exports.warn = async (content) => {
   //Webhook Log
   global.client.clientDataCache.logQueue.push({
     color: 0xFEE75C,
-    title: `**»** Uyarı! (\`${dateNow}\`)`,
+    title: `**»** Warning!  (\`${dateNow}\`)`,
     description: `\`\`\`${content}\`\`\``,
   });
 
@@ -216,4 +216,4 @@ exports.debug = (...args) => this.log(...args, 'debug');
 exports.interaction = (...args) => this.log(...args, 'interaction');
 exports.ready = (...args) => this.log(...args, 'ready');
 exports.load = (...args) => this.log(...args, 'load');
-exports.event = (...args) => this.log(...args, 'event');
+exports.event = (...args) => this.log(...args, 'event'
